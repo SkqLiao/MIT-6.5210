@@ -1,4 +1,6 @@
-## [6.5210/18.415: Advanced Algorithms](https://6.5210.csail.mit.edu/)
+# MIT 6.5210/18.415: Advanced Algorithms
+
+- Course Website: https://6.5210.csail.mit.edu/
 
 - Materials: https://6.5210.csail.mit.edu/materials.html
 - Problem Sets: https://6.5210.csail.mit.edu/psets.html
