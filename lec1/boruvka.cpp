@@ -29,7 +29,7 @@ struct DSU {
 };
 
 int main() {
-    // cin.tie(nullptr)->sync_with_stdio(false);
+    cin.tie(nullptr)->sync_with_stdio(false);
     int n, m;
     cin >> n >> m;
     vector<array<int, 3>> g(m);
@@ -71,13 +71,14 @@ int main() {
         bool flag = false;
 
         for (int i = 0; i < m; ++i) {
-            if (used[i]) {
-                auto [u, v, w] = g[i];
-                dsu.merge(dsu.find(u), dsu.find(v));
-                ans += w;
-                ++cnt;
-                flag = true;
-            }
+            if (!used[i])
+                continue;
+
+            auto [u, v, w] = g[i];
+            dsu.merge(u, v);
+            ans += w;
+            ++cnt;
+            flag = true;
         }
 
         if (!flag)

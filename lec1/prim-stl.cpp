@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-    // cin.tie(nullptr)->sync_with_stdio(false);
+    cin.tie(nullptr)->sync_with_stdio(false);
     int n, m;
     cin >> n >> m;
     vector<vector<pair<int, int>>> g(n + 1);

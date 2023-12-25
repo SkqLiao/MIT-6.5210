@@ -5,7 +5,7 @@ using namespace std;
 using namespace __gnu_pbds;
 
 int main() {
-    // cin.tie(nullptr)->sync_with_stdio(false);
+    cin.tie(nullptr)->sync_with_stdio(false);
     int n, m;
     cin >> n >> m;
     vector<vector<pair<int, int>>> g(n + 1);
@@ -22,7 +22,7 @@ int main() {
 
     __gnu_pbds::priority_queue<pair<int, int>, greater<>, pairing_heap_tag> pq;
     vector<__gnu_pbds::priority_queue<pair<int, int>, greater<>, pairing_heap_tag>::point_iterator> it(n + 1,
-        nullptr);
+            nullptr);
     vector<int> dis(n + 1, 1e9);
     vector<bool> vis(n + 1);
     dis[1] = 0;
