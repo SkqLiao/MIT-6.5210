@@ -3,10 +3,11 @@
 using namespace std;
 
 struct DSU {
-    vector<int> fa;
+    vector<int> fa, rank;
     int n;
     DSU(int n): n(n) {
         fa.resize(n + 1);
+        rank.resize(n + 1);
         iota(fa.begin(), fa.end(), 0);
     }
     int find(int x) {
@@ -18,7 +19,11 @@ struct DSU {
         if (x == y)
             return false;
 
+        if (rank[x] < rank[y])
+            swap(x, y);
+
         fa[x] = y;
+        rank[x] += rank[x] == rank[y];
         return true;
     }
 };
