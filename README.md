@@ -5,14 +5,20 @@
 - Materials: https://6.5210.csail.mit.edu/materials.html
 - Problem Sets: https://6.5210.csail.mit.edu/psets.html
 
+## Course
+
+- [Lecture 01: Fibonacci Heaps](https://www.youtube.com/watch?v=rnwf0dDGNCM&t=879s) :white_check_mark: 2023/12/25
+
+- [Lecture 02: Fibonacci Heap and Persistent Data Structures](https://www.youtube.com/watch?v=TB3Y308PCrA) 
+
 ## Lecture 1:  Fibonacci Heaps
 
 - Minimum Spanning Tree (MST)
   - Overall tutorial (Chinese): [OI-Wiki](https://oi-wiki.org/graph/mst/)
-  - Online Judge & Data Format (Chinese): [Luogu P3366](https://www.luogu.com.cn/problem/P3366)
+  - Online Judge & Data Format (Chinese): [LG P3366](https://www.luogu.com.cn/problem/P3366)
   - Prim: select "nearest" vertex by heap
     - [with STL priority_queue](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-stl.cpp) (no `modify`/`decrease_key`)
-      - $O((n+m)\log{m})$, since there's no `decrease`, pq's maximum size is $m$, with many "out-dated" vertexs
+      - $O((n+m)\log{m})$, since there's no `decrease`, pq's maximum size is $m$, with many "out-dated" vertexes
       - [std::priority_queue](https://en.cppreference.com/w/cpp/container/priority_queue): document for STL pq
     - [with pbds priority_queue (thin_heap_tag)](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-pbds.cpp) (has `modify`)
       - $O(n\log{n}+m)$, $O(1)$ for push / `decrease_key`,  $\Theta(\log{n})$ for `pop`
@@ -28,6 +34,8 @@
       - $O(m\alpha(n))$, DSU `search` with *Union-By-Rank* and *path compression*
       - [code](https://github.com/SkqLiao/codeforces-edu): solution code for practice of [Step 1](https://codeforces.com/edu/course/2/lesson/7/1/practice), [Step 2](https://codeforces.com/edu/course/2/lesson/7/2/practice), [Step 3](https://codeforces.com/edu/course/2/lesson/7/3/practice)
   - [Borůvka](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/boruvka.cpp): connect components with "shortest" edges by DSU
-    - $O(m\log{n})$, maxinum $O(\log{n})$ iterations to connect all components
-
+    - $O(m\log{n})$, maximum $O(\log{n})$ iterations to connect all components
+- Binomial Heap
+  - *Stanford CS166* Binomial Heaps: [Lecture Slides](https://web.stanford.edu/class/cs166/lectures/07/Slides07.pdf), [Condensed Slides](https://web.stanford.edu/class/cs166/lectures/07/Small07.pdf)
 - Fibonacci Heap
+  - *Stanford CS166* Fibonacci Heaps: [Lecture Slides](https://web.stanford.edu/class/cs166/lectures/08/Slides08.pdf), [Condensed Slides](https://web.stanford.edu/class/cs166/lectures/08/Small08.pdf)
