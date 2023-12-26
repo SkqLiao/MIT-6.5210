@@ -3,182 +3,125 @@
 using namespace std;
 
 template<class T>
-struct BinomialHeap {
+struct Heap {
     struct Node {
         T key;
         int degree;
-        Node *parent, *child, *prv, *nxt;
-        Node() {
-            degree = 0;
-            parent = child = prv = nxt = nullptr;
-        }
-        Node(T x): key(x) {
-            degree = 0;
-            parent = child = prv = nxt = nullptr;
-        }
-    } *head;
-    vector<Node *> v;
+        shared_ptr<Node> parent, child, prv, nxt;
+        Node() : key(0), degree(0) {}
+        Node(T x) : key(x), degree(0) {}
+    };
+    shared_ptr<Node> head;
     int n;
-    BinomialHeap() {
+    Heap() {
         n = 0;
-        head = nullptr;
-    }
-    void alloc() {
-        if (n == (int)v.size()) {
-            for (int i = 0; i < n; ++i)
-                v.push_back(new Node());
-        }
     }
     bool empty() {
         return n == 0;
     }
-    // add t to head double-linked list
-    void link(Node *head, Node *t) {
+    void link(shared_ptr<Node> &head, shared_ptr<Node> &t) {
+        // link t to the right side of head
         if (!t)
             return ;
 
         if (!head) {
             head = t;
-            t->prv = t->nxt = t;
+            head->prev = head->next = head;
+        } else if (head->next == head) {
+            head->next = t;
+            head->prev = t;
+            t->prev = head;
+            t->next = head;
+            head = head->key < head->next->key ? head : head->next;
         } else {
-            t->prv = head;
-            t->nxt = head->nxt;
-            head->nxt = t;
-            head = head->key < t->key ? head : t;
+            t->prev = head;
+            t->next = head->next;
+            head->next = t;
+            head = head->key < head->next->key ? head : head->next;
         }
     }
     // O(1)
-    typename vector<Node *>::iterator push(T x) {
+    shared_ptr<Node> push(T x) {
         ++n;
-        link(head, v[n]);
-        return v.begin() + n;
+        auto t = make_shared<Node>(x);
+        link(head, t);
+        return std::move(t);
     }
     // O(1)
     T top() {
-        assert(n > 0 && head);
+        assert(!empty());
         return head->key;
     }
-    // O(t+log(n))
-    void coalesce() {
-        vector<Node *> b(ceil(log(n)), nullptr);
-        Node *p = head;
+    // O(logn+t)
+    void pop() {
+        assert(n > 0);
+        auto t = head->child;
+
+        if (t) {
+            do {
+                t->parent = nullptr;
+                t = t->next;
+            } while (t != head->child);
+
+            if (head->next == head) {
+                head = t;
+            } else {
+                auto nh = head->next;
+                nh->prev = head->prev;
+                nh->prev->next = nh;
+                head = nh;
+                nh = head->next;
+                head->next = t;
+                t->prev->next = nh;
+                nh->prev = t->prev;
+                t->prev = head;
+            }
+        }
+
+        consolidate();
+    }
+    void consolidate() {
+        vector<shared_ptr<Node>> a;
+        shared_ptr<Node> t = head;
+        int d = 0;
 
         do {
-            Node *q = p->nxt;
+            d = max(d, t->degree);
+            t = t->next;
+        } while (t != head);
 
-            while (b[p->degree]) {
-                if (p->key > b[p->degree])
-                    swap(p, b[p->degree]);
+        a.resize(d + 2, nullptr);
 
-                p->degree++;
+        do {
+            while (a[t->degree]) {
+                auto x = a[t->degree];
+                a[t->degree] = nullptr;
 
-                if (p->child == nullptr) {
-                    p->child = b[p->degree];
-                    p->child->nxt = p->child->prv = p->child;
-                } else {
-                    p->child->prev = b[p->degree];
-                    b[p->degree]->nxt = p->child;
+                if (t->key > x->key) {
+                    swap(t, x);
                 }
 
-                b[p->degree]->parent = p;
+                t->degree++;
+                x->parent = t;
+                link(t->child, x);
             }
 
-            b[p->degree] = p;
-            p = q;
-        } while (p != head);
+            a[t->degree] = t;
+        } while (t != head);
 
-        head = nullptr;
-
-        for (auto p : b) {
-            link(head, p);
-        }
-    }
-    void pop() {
-        --n;
-        Node *p = head->child;
-        Node *nh = head->nxt;
-
-        if (nh == head) {
-            nh = p;
-        } else {
-            do {
-                link(nh, p);
-                p = p->nxt;
-            } while (p != head->child);
-        }
-
-        head = p = nh;
+        auto p = head;
 
         do {
-            if (p->key < head->key)
-                head = p;
+            if (t->key < head->key) {
+                head = t;
+            }
 
-            p = p->nxt;
-        } while (p != nh);
-    }
-    void decrease(typename vector<Node *>::iterator it, T x) {
-        Node *p = *it;
-        assert(p && x < p->key);
-        p->key = x;
-
-        while (p->parent && p->parent->key > x) {
-            swap(p->parent, p);
-        }
+            t = t->next;
+        } while (t != head);
     }
 };
 
 int main() {
-    freopen("in.txt", "r", stdin);
-    cin.tie(nullptr)->sync_with_stdio(false);
-    int n, m;
-    cin >> n >> m;
-    vector<vector<pair<int, int>>> g(n + 1);
-
-    for (int i = 1; i <= m; ++i) {
-        int u, v, w;
-        cin >> u >> v >> w;
-        g[u].push_back({v, w});
-        g[v].push_back({u, w});
-    }
-
-    long long ans = 0;
-    int cnt = 0;
-
-    BinomialHeap<pair<int, int>> pq;
-    cout << "???" << endl;
-    return 0;
-    vector<optional<vector<decltype(pq)::Node *>::iterator>> it(n + 1);
-    vector<int> dis(n + 1, 1e9);
-    vector<bool> vis(n + 1);
-    dis[1] = 0;
-    it[1] = pq.push({0, 1});
-    return 0;
-
-    while (!pq.empty()) {
-        auto [d, u] = pq.top();
-        pq.pop();
-
-        ans += dis[u];
-        vis[u] = 1;
-        ++cnt;
-
-        for (auto [v, w] : g[u]) {
-            if (!vis[v] && dis[v] > w) {
-                dis[v] = w;
-
-                if (it[v] != nullopt)
-                    pq.decrease(it[v].value(), {w, v});
-                else
-                    it[v] = pq.push({w, v});
-            }
-        }
-    }
-
-    if (cnt == n) {
-        cout << ans << "\n";
-    } else {
-        cout << "orz" << "\n";
-    }
 
     return 0;
 }
