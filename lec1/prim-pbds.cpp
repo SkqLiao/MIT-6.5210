@@ -41,9 +41,9 @@ int main() {
                 dis[v] = w;
 
                 if (it[v] != nullptr)
-                    pq.modify(it[v], {w, v});
+                    pq.modify(it[v], {dis[v], v});
                 else
-                    it[v] = pq.push({w, v});
+                    it[v] = pq.push({dis[v], v});
             }
         }
     }

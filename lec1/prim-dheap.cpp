@@ -145,9 +145,9 @@ int main() {
                 dis[v] = w;
 
                 if (!it[v].empty())
-                    pq.decrease(it[v], {w, v});
+                    pq.decrease(it[v], {dis[v], v});
                 else
-                    it[v] = pq.push({w, v});
+                    it[v] = pq.push({dis[v], v});
             }
         }
     }

@@ -38,7 +38,7 @@ int main() {
         for (auto [v, w] : g[u]) {
             if (!vis[v] && dis[v] > w) {
                 dis[v] = w;
-                pq.push({w, v});
+                pq.push({dis[v], v});
             }
         }
     }
