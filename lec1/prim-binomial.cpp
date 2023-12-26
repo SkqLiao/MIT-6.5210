@@ -1,9 +1,8 @@
-// C++ program for the above approach
 #include <bits/stdc++.h>
 
 using namespace std;
 
-#define DEBUG cout << "[" << __FUNCTION__ << "] " << endl;
+#define DEBUG cout << "[" << __FUNCTION__ << "] " << endl
 
 template<typename T, typename G>
 ostream &operator<<(std::ostream &os, const std::pair<T, G> &p) {
