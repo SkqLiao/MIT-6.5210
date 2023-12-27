@@ -17,19 +17,21 @@
   - Overall tutorial (Chinese): [OI-Wiki](https://oi-wiki.org/graph/mst/)
   - Online Judge & Data Format (Chinese): [LG P3366](https://www.luogu.com.cn/problem/P3366)
   - Prim: select "nearest" vertex by heap
-    - [with STL priority_queue](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-stl.cpp) (no `modify`/`decrease_key`)
+    - [with STL priority_queue](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-stl.cpp)
       - $O((n+m)\log{m})$, since there's no `decrease`, pq's maximum size is $m$, with many "out-dated" vertexes
       - [std::priority_queue](https://en.cppreference.com/w/cpp/container/priority_queue): document for STL pq
-    - [with pbds priority_queue (thin_heap_tag)](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-pbds.cpp) (has `modify`)
+    - [with pbds priority_queue (thin_heap_tag)](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-pbds.cpp)
       - $O(n\log{n}+m)$, $O(1)$ for `push` / `decrease_key`,  $\Theta(\log{n})$ for `pop`
       - [Priority-Queue Design](https://gcc.gnu.org/onlinedocs/libstdc++/ext/pb_ds/pq_design.html): document for pbds pq
       - [Priority-Queue Performance Tests](https://gcc.gnu.org/onlinedocs/libstdc++/ext/pb_ds/pq_performance_tests.html):  performance tests for difference pqs
-    - [with hand-written binary_heap](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-binary.cpp) (has `decrease_key`)
+    - [with hand-written binary_heap](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-binary.cpp)
       - $O((n+m)\log{n})$, $O(\log{n})$ for `push` / `decrease_key` / `pop`
-    - [with hand-written d-heap](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-dheap.cpp) (has `decrease_key`)
+    - [with hand-written d-ary heap](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-dheap.cpp)
       - $O(m\log_{\frac{m}{n}}{n})$, set $d=\frac{m}{n}$ to balance `push` / `decrease_key` $O(m\times \log_{d}{n})$ and `pop` $O(n\times d\log_{d}{n})$
-    - [with hand-written binomial-heap](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-binomial.cpp) (has `decrease_key`)
+    - [with hand-written binomial-heap](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-binomial.cpp)
       - $O((n+m)\log{n})$, $O(1)$ for `push` ,  $O(\log{n})$ for `pop` / `decrease_key`
+    - [with hand-written fibonacci-heap](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/prim-fibonacci.cpp)
+      - $O(n\log{n}+m)$, $O(1)$ for `push` / `decrease_key`,  $\Theta(\log{n})$ for `pop`
   - [Kruskal](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/kruskal.cpp): select "shortest" edge by DSU
     - $O(m\log{m})$, sorting all edges by `std::sort`
     - [Disjoint Sets Union](https://codeforces.com/edu/course/2/lesson/7): Theory & Practice by [Codeforces ITMO Academy: pilot course](https://codeforces.com/edu/course/2)
@@ -37,8 +39,36 @@
       - [code](https://github.com/SkqLiao/codeforces-edu): solution code for practice of [Step 1](https://codeforces.com/edu/course/2/lesson/7/1/practice), [Step 2](https://codeforces.com/edu/course/2/lesson/7/2/practice), [Step 3](https://codeforces.com/edu/course/2/lesson/7/3/practice)
   - [Borůvka](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec1/boruvka.cpp): connect components with "shortest" edges by DSU
     - $O(m\log{n})$, maximum $O(\log{n})$ iterations to connect all components
+  - Ramachandran: [An Optimal Minimum Spanning Tree Algorithm](https://web.eecs.umich.edu/~pettie/papers/jacm-optmsf.pdf)
+    - $O(m)$, but runtime not clear
+- Amortized Analysis
+  - *Stanford CS166* [**Amortized Analysis**](https://web.stanford.edu/class/cs166/lectures/06/Slides06.pdf)
 - Binomial Heap
-  - *Stanford CS166* **Amortized Analysis**: [Lecture Slides](https://web.stanford.edu/class/cs166/lectures/06/Slides06.pdf), [Condensed Slides](https://web.stanford.edu/class/cs166/lectures/06/Small06.pdf)
-  - *Stanford CS166* **Binomial Heaps**: [Lecture Slides](https://web.stanford.edu/class/cs166/lectures/07/Slides07.pdf), [Condensed Slides](https://web.stanford.edu/class/cs166/lectures/07/Small07.pdf)
+  - Materials:
+    - *Stanford CS166* [**Binomial Heaps**](https://web.stanford.edu/class/cs166/lectures/07/Slides07.pdf)
+    - *Lecture Slides for Algorithm Design* [**Data Structures II** (*binary and binomial heaps*)](https://www.cs.princeton.edu/~wayne/kleinberg-tardos/pdf/BinomialHeaps.pdf)
+  - maintain $O(\log{n})$ different order *Binomial Trees*
+  - $\Phi(H)=\text{trees}(H)$
 - Fibonacci Heap
-  - *Stanford CS166* **Fibonacci Heaps**: [Lecture Slides](https://web.stanford.edu/class/cs166/lectures/08/Slides08.pdf), [Condensed Slides](https://web.stanford.edu/class/cs166/lectures/08/Small08.pdf)
+  - Optimized from *lazy binomial heap*
+  - Materials:
+    - *Stanford CS166* [**Fibonacci Heaps**](https://web.stanford.edu/class/cs166/lectures/08/Slides08.pdf)
+    - *Lecture Slides for Algorithm Design* [**Data Structures III** (*Fibonacci heaps*)](https://www.cs.princeton.edu/~wayne/kleinberg-tardos/pdf/FibonacciHeaps.pdf)
+  - $\Phi(H)=\text{trees}(H)+2\times \text{marks}(H)$
+  - Why "Fibonacci" heap?
+    - *Maximally-Damaged Tree* of order $k$ has at least $F_{k+2}$ nodes
+    - $F_k=\Theta(\varphi^k)$, the number of nodes in a tree grows exponentially, but based on $\varphi(\approx 1.61)$, not $2$
+  - Runtime Performance: quite slow, has huge constant factor for operations
+    - huge memory requirment (4 pointers to parent/child/siblings + 1 bit for mark + 1 intergar for order extra per node)
+    - poor locality for caching (using pointers not array)
+
+- Summary
+
+| Operation | Binary heap  | D-ary heap        | Binomial heap(lazy) | Fibonacci heap |
+| --------- | ------------ | ----------------- | ------------------- | -------------- |
+| push      | $O(\log(n))$ | $O(d\log_{d}{n})$ | $O(1)$              | $O(1)$         |
+| pop       | $O(\log(n))$ | $O(d\log_{d}{n})$ | $O(\log{n})$*       | $O(\log{n})$*  |
+| top       | $O(1)$       | $O(1)$            | $O(1)$              | $O(1)$         |
+| decrease  | $O(\log(n))$ | $O(\log_d{n})$    | $O(\log{n})$        | $O(1)$*        |
+| merge     | $O(n)$       | $O(n)$            | $O(1)$              | $O(1)$         |
+
