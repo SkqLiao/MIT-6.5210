@@ -81,19 +81,12 @@
   - *Collège de France* [**Persistent data structures**](https://xavierleroy.org/CdF/2022-2023/)
 
 - persistent array (using segment tree)
-
   - $O(\log n)$ space & time per operation (query & modify)
-
   - generator: [gen.cpp](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/gen.cpp)
-
     - task same as [LG P3919](https://www.luogu.com.cn/problem/P3919) (Chinese)
     - sample [input.txt](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/in.txt) [output.txt](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/out.txt)
-
   - C++ version: [arrary.cpp](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/array.cpp), ~0.7s for sample input (-O2)
-
     - based on `std::vector`, super fast
-
   - Haskell version: [array-vec.hs](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/array-vec.hs) / [array-seq.hs](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/array-seq.hs), ~ 6.1s / 7.6s for sample input (-O2)
-
       - based on `Data.Vector.Mutable` / `Data.Sequence`, really slow...
       - using Cabal [lec2.cabal](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/lec2.cabal) to compile & run
