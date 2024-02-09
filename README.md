@@ -13,7 +13,11 @@
 
 - [Lecture 03: Persistent Data Structures](https://www.youtube.com/watch?v=nofifCFuPiQ) :white_check_mark:2023/12/30
 
-## Lecture 1:  Fibonacci Heaps
+- [Lecture 04: Splay Trees](https://youtu.be/56AGGEkdA2g) :white_check_mark:2024/02/06
+
+- [Lecture 05: Splay Trees Continued and Buckets](https://www.youtube.com/watch?v=HCQJfTyMwi8) :white_check_mark:2024/02/07
+
+## Lecture 1-2:  Fibonacci Heaps
 
 - Minimum Spanning Tree (MST)
   - Overall tutorial (Chinese): [OI-Wiki](https://oi-wiki.org/graph/mst/)
@@ -46,7 +50,7 @@
 - Amortized Analysis
   - *Stanford CS166* [**Amortized Analysis**](https://web.stanford.edu/class/cs166/lectures/06/Slides06.pdf)
 - Binomial Heap
-  - Materials:
+  - Materials
     - *Stanford CS166* [**Binomial Heaps**](https://web.stanford.edu/class/cs166/lectures/07/Slides07.pdf)
     - *Lecture Slides for Algorithm Design* [**Data Structures II** (*binary and binomial heaps*)](https://www.cs.princeton.edu/~wayne/kleinberg-tardos/pdf/BinomialHeaps.pdf)
   - maintain $O(\log{n})$ different order *Binomial Trees*
@@ -74,13 +78,12 @@
 | decrease  | $O(\log(n))$ | $O(\log_d{n})$    | $O(\log{n})$        | $O(1)$*        |
 | merge     | $O(n)$       | $O(n)$            | $O(1)$              | $O(1)$         |
 
-## Lecture 2: Persistent Data Structures
+## Lecture 2-3: Persistent Data Structures
 
-- Lectures:
-  - [OI Wiki(Chinese)](https://oi-wiki.org/ds/persistent/)
+- Lectures
+  - [OI Wiki (Chinese)](https://oi-wiki.org/ds/persistent/)
   - *Collège de France* [**Persistent data structures**](https://xavierleroy.org/CdF/2022-2023/)
-
-- persistent array (using segment tree)
+- Persistent array (using segment tree)
   - $O(\log n)$ space & time per operation (query & modify)
   - generator: [gen.cpp](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/gen.cpp)
     - task same as [LG P3919](https://www.luogu.com.cn/problem/P3919) (Chinese)
@@ -90,3 +93,70 @@
   - Haskell version: [array-vec.hs](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/array-vec.hs) / [array-seq.hs](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/src/array-seq.hs), ~ 6.1s / 7.6s for sample input (-O2)
       - based on `Data.Vector.Mutable` / `Data.Sequence`, really slow...
       - using Cabal [lec2.cabal](https://github.com/SkqLiao/MIT-6.5210/blob/main/lec2/lec2.cabal) to compile & run
+
+## Lecture 4-5: Splay Trees
+
+- Lectures
+  - [OI Wiki (Chinese)](https://oi-wiki.org/ds/splay/)
+- Analysis
+  - **Potential** $\Phi=\sum{r(x)}$​
+    - Weight $w(x)$
+    - Size $s(x)=\sum_{y\in \text{subtree}(x)}{w(y)}$
+    - Rank $r(x)=\log{s(x)}$
+  - **Access Lemma**
+    - Amortized time to splay a node $x$ given root $t$ is at most $3(r(t) − r(x)) + 1 = O(\log(s(t)/s(x)))$​
+  - Total real cost for $m$ operations
+    - $O(m \log n) − (\Phi_{m} − \Phi_{0}) = O(m \log n) + \Phi_{0} − \Phi_{m}$
+    - $\Phi_0 − \Phi_m \leq n \log W − \sum{x w_x} = \sum{x\log W/w_i}$
+  - **Balance theorem**
+    - Total cost for $m$ operations is as good as *any* balanced tree
+    - Set $w(x)=\frac{1}{n}$​
+    - Total cost: $O((n+m)\log{n})$ 
+  - **Static Optimality**
+    - Total cost for $m$​ operations is as good as of *any* fixed tree (even with opeation sequence known)
+    - If node accessed $mp_x$ times, set $w_x=mp_x$​
+    - Total cost: $O(m\log_x{\log{1/p_x}})$​
+    - Matches the lower bound for static access: Huffman coding
+  - **Static Finger Optimality**
+    - Total cost for $m$ operations is as good as of *any* fixed tree in which additionally we start our search from any fixed node $f$
+    - set $w_x=\frac{1}{1+|x-f|^2}$，where $|x-f|$ is the distance between $x$ and finger $f$​
+    - Amortized cost of search(x): $O(\log{|x-f|})$​
+    - Is optimal for *dynamic* finger too
+  - **Working Set/Cache Optimality**
+    - At access $j$ to node $x_j$, let be number of distinct nodes accessed since that node $x_j$ was previously accessed
+    - Time: $O(n\log n +\sum{\log t_j})$​
+  - **Best-of-the-Above Optimality**
+    -  Cost is at most as good as the *best* one of the choices stemming from the above optimality conditions
+  - **Dynamic Optimality Conjecture**
+    -  The performance of splay tree matches (up to constant) the performance of the best *dynamic* BST
+
+## Lecture 5: Buckets
+
+- Analysis: SSSP problem
+  - OJ Submission: [CSES Shortest Routes I](https://cses.fi/problemset/task/1671/)
+  - Suppose max edge distance is $C$
+  - heap min increasing
+  - Dial’s algorithm
+    - Use $nC$ buckets to store node with different distance
+    - Time Complexity: $O(m+nC)$​ or $O(m+D)$, $D$ stands for max distance
+    - Using circular storing: $C$​ buckets only
+    - [C++ code](naive.cpp)
+      - *without* decrase_key (push same node multiple times)
+      - **RE** if $C$ is huge (space: $O(C)$)
+  - Two-level block
+    - $b$ buckets a block
+    - Time Complexity: $O(m+nC/b+nb)=O(m+n\sqrt{C})$ where $b=\sqrt{C}$​
+    - [C++ code](sqrt-block.cpp) 
+      - *without* decrase_key (push same node multiple times)
+      - **RE** if $C$ is huge (space: $O(C)$)
+  - $k$ level block: Trie
+    - depth $k$ tree over arrays of size $\Delta=(C+1)^{1/k}$
+    - Time Complexity: $O(km+knC^{1/k})=O(m\log_{m/n}{C})$ where $k=\log{C}/\log{(m/n)}$​
+    - [code]() 
+      - *without* decrase_key (push same node multiple times)
+      - space allocated when necessary (but without rubbish collection)
+  - Lazy Implementation
+    - Time Complexity: $O(m+n(k+C^{1/k}))=O(m+n\log{C}/\log{\log{C}})$ where $k=2\log{C}/\log{\log{C}}$
+    - [C++ code]() 
+      - *with* decrease_key
+      - space allocated when necessary (but without rubbish collection)
