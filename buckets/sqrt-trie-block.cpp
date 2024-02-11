@@ -103,6 +103,10 @@ struct Trie {
         v[x].depth = v[fa].depth + 1;
         move(fa, o, depth + 1);
     }
+    void add(int now, int o, Pair p) {
+        auto it = v[now].nodes[o].insert(v[now].nodes[o].end(), p);
+        info[p.node] = Info(now, o, it);
+    }
     void push(long long val, int node) {
         auto vval = val;
         val %= C;
@@ -111,10 +115,8 @@ struct Trie {
             ++num;
 
             if (val < lastans) {
-                int o = val / pw[0];
                 ++v[1].size;
-                auto it = v[1].nodes[o].insert(v[1].nodes[o].end(), Pair(vval, val % pw[0], node));
-                info[node] = Info(1, o, it);
+                add(1, val / pw[0], Pair(vval, val % pw[0], node));
                 return ;
             }
 
@@ -127,10 +129,8 @@ struct Trie {
 
             if (now == 1 && rval % C < lastans) {
                 if (val < lastans) {
-                    int o = val / pw[0];
                     ++v[1].size;
-                    auto it = v[1].nodes[o].insert(v[1].nodes[o].end(), Pair(vval, val % pw[0], node));
-                    info[node] = Info(1, o, it);
+                    add(1, val / pw[0], Pair(vval, val % pw[0], node));
                     return ;
                 } else {
                     insert(vval, val, node);
@@ -151,8 +151,7 @@ struct Trie {
             val %= pw[i];
 
             if (active[i] != o) {
-                auto it = v[now].nodes[o].insert(v[now].nodes[o].end(), Pair(vval, val, node));
-                info[node] = Info(now, o, it);
+                add(now, o, Pair(vval, val, node));
                 return ;
             }
 
@@ -164,8 +163,7 @@ struct Trie {
         }
 
         ++v[now].size;
-        auto it = v[now].nodes[val].insert(v[now].nodes[val].end(), Pair(vval, val, node));
-        info[node] = Info(now, val, it);
+        add(now, val, Pair(vval, val, node));
     }
     pair<long long, int> pop(int now) {
         if (v[now].nodes[0].empty()) {

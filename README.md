@@ -160,3 +160,6 @@
     - [C++ code](https://github.com/SkqLiao/MIT-6.5210/blob/main/buckets/sqrt-trie-block.cpp) 
       - *with* decrease_key
       - space allocated when necessary (but without rubbish collection)
+  - Summary
+    - slower than dijkstra in practice
+    - due to high constant factor
