@@ -129,6 +129,14 @@
     -  Cost is at most as good as the *best* one of the choices stemming from the above optimality conditions
   - **Dynamic Optimality Conjecture**
     -  The performance of splay tree matches (up to constant) the performance of the best *dynamic* BST
+- [cpp code 1](https://github.com/SkqLiao/MIT-6.5210/blob/main/splay-tree/splay.cpp)
+  - [LOJ 104](https://loj.ac/p/104)
+  - insert / delete / kth / rank / pre / nxt
+  
+- [cpp code 2](https://github.com/SkqLiao/MIT-6.5210/blob/main/splay-tree/splay-rev.cpp)
+  - [LOJ 105](https://loj.ac/p/105)
+  - reverse interval
+
 
 ## Lecture 5: Buckets
 
