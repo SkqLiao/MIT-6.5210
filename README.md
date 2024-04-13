@@ -154,10 +154,10 @@
   - Two-level block
     - $b$ buckets a block
     - Time Complexity: $O(m+nC/b+nb)=O(m+n\sqrt{C})$ where $b=\sqrt{C}$
-    - [C++ code](https://github.com/SkqLiao/MIT-6.5210/blob/main/buckets/sqrt-block.cpp) 
+    - [C++ code version 1](https://github.com/SkqLiao/MIT-6.5210/blob/main/buckets/sqrt-block.cpp) 
       - *without* decrase_key (push same node multiple times)
       - **RE** if $C$ is huge (space: $O(C)$​)
-    - [C++ code2](https://github.com/SkqLiao/MIT-6.5210/blob/main/buckets/sqrt-list-block.cpp) 
+    - [C++ code version 2](https://github.com/SkqLiao/MIT-6.5210/blob/main/buckets/sqrt-list-block.cpp) 
       - *without* decrase_key (push same node multiple times)
       - space allocated when necessary (but without rubbish collection)
   - $k$ level block: Trie
@@ -167,7 +167,7 @@
     - Time Complexity: $O(m+n(k+C^{1/k}))=O(m+n\log{C}/\log{\log{C}})$ where $k=2\log{C}/\log{\log{C}}$
     - [C++ code](https://github.com/SkqLiao/MIT-6.5210/blob/main/buckets/sqrt-trie-block.cpp) 
       - *with* decrease_key
-      - space allocated when necessary (but without rubbish collection)
+      - space allocated when necessary (but no garbage collection)
   - Summary
     - slower than dijkstra in practice
     - due to high constant factor
